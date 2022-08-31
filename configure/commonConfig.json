@@ -1,0 +1,9 @@
+{
+	"level": "debug",
+	"serverUrl": "http://localhost",
+	"serverIp": "9999",
+	"logDir": "log",
+	"logDirSuffixTimeFormat": "2022/08",
+	"sysTimeForm": "2022-08-29 15:20:05",
+	"sysTimeFormShort": "2022-08-29"
+}

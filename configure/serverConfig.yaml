@@ -1,0 +1,4 @@
+FireMethodNotAllowed: true
+DisableStartupLog: true
+EnableOptimizations: true
+CharSet: UTF-8
