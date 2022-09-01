@@ -31,6 +31,7 @@ func main() {
 		}
 		return fd
 	}(), os.Stdout))
+
 	requestLogger := logger.New(logger.Config{
 		Status:             true,
 		IP:                 true,
@@ -61,9 +62,15 @@ func main() {
 
 	cfg := configure.ServerCfg{}
 	configure.Config.Unmarshal(&cfg)
-	app.Logger().Infof("load the server config: %#v", pretty.Formatter(cfg))
+	app.Logger().Infof(`
+				_    
+		 / ___| ___  
+		\ |  _ / _ \ 
+		/ |_| | (_) |
+		\____|\___/	
+	`)
+	app.Logger().Debugf("load the server config: %#v", pretty.Formatter(cfg))
 	app.Run(
-		// iris.Addr(configure.Config.GetString("ServerUrl")+":"+configure.Config.GetString("ServerIp")),
 		iris.Addr(":"+configure.Config.GetString("ServerIp")),
 		iris.WithoutServerError(iris.ErrServerClosed),
 		config,

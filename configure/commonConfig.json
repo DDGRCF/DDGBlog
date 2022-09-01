@@ -1,6 +1,6 @@
 {
+	"appName": "DDGBlob",
 	"level": "debug",
-	"serverUrl": "http://localhost",
 	"serverIp": "9999",
 	"logDir": "log",
 	"logDirSuffixTimeFormat": "2022/08",

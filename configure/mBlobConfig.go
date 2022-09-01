@@ -6,14 +6,15 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/DDGRCF/myBlob/database"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
 
 type ServerCfg struct {
+	AppName                string `mapstructure:"DDGBlob"`
 	Level                  string `mapstructure:"level"`
 	ServerUrl              string `mapstructure:"serverUrl"`
-	ServerIp               string `mapstructure:"serverIp"`
 	LogDir                 string `mapstructure:"logDir"`
 	LogDirSuffixTimeFormat string `mapstructure:"logDirSuffixTimeFormat"`
 	SysTimeForm            string `mapstructure:"sysTimeForm"`
@@ -23,9 +24,9 @@ type ServerCfg struct {
 }
 
 var defaultConf = ServerCfg{
+	AppName:                "DDGBlob",
 	Level:                  "debug",
 	ServerUrl:              "http://localhost",
-	ServerIp:               "9999",
 	LogDir:                 "log",
 	LogDirSuffixTimeFormat: "2022/08",
 	SysTimeForm:            "2022-08-29 15:20:05",
@@ -54,8 +55,8 @@ func initDefault() {
 	viper.SetConfigType("json")
 	viper.ReadConfig(defaultConfig)
 	Config.MergeConfigMap(viper.AllSettings())
+	pflag.String("appName", "DDGBlob", "app name")
 	pflag.String("level", "debug", "level to log")
-	pflag.String("serverUrl", "http://localhost", "")
 	pflag.String("serverIp", "9999", "")
 	pflag.String("logDir", "log", "a dir to save log")
 	pflag.String("logDirSuffixTimeFormat", "2022/08", "")
@@ -63,6 +64,7 @@ func initDefault() {
 	pflag.String("sysTimeFormShort", "2022-08-29", "")
 	pflag.String("commonConfigFile", "configure/commonConfig.json", "")
 	pflag.String("serverConfigFile", "configure/serverConfig.yaml", "")
+	pflag.String("databaseConfigFile", "configure/mysqlConfig.json", "")
 	Config.BindPFlags(pflag.CommandLine)
 	Config.SetConfigFile(Config.GetString("commonConfigFile"))
 	Config.AddConfigPath(".")
@@ -72,7 +74,7 @@ func initDefault() {
 	} else {
 		Config.MergeInConfig()
 	}
-
+	database.MysqlInit(Config.GetString("databaseConfigFile"))
 	replacer := strings.NewReplacer(".", "_")
 	Config.SetEnvKeyReplacer(replacer)
 	Config.AllowEmptyEnv(true)
