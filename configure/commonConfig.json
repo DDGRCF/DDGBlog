@@ -1,9 +1,9 @@
 {
-	"appName": "DDGBlob",
+	"appName": "DDG Blog",
 	"level": "debug",
-	"serverIp": "9999",
+	"serverPort": "12000",
+	"serverIp": "127.0.0.1",
 	"logDir": "log",
-	"logDirSuffixTimeFormat": "2022/08",
-	"sysTimeForm": "2022-08-29 15:20:05",
-	"sysTimeFormShort": "2022-08-29"
+	"sysTimeForm": "2006-01-02 15:20:05",
+	"sysTimeFormShort": "2006-01-02"
 }

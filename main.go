@@ -7,11 +7,13 @@ import (
 	"path"
 	"time"
 
-	"github.com/DDGRCF/myBlob/configure"
-	"github.com/DDGRCF/myBlob/utils"
+	"github.com/DDGRCF/DDGBlog/configure"
+	"github.com/DDGRCF/DDGBlog/utils"
+	"github.com/DDGRCF/DDGBlog/web/controllers"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
+	"github.com/kataras/iris/v12/mvc"
 	"github.com/kr/pretty"
 )
 
@@ -21,7 +23,7 @@ func main() {
 	app.Logger().SetLevel(configure.Config.GetString("level"))
 	app.Logger().SetOutput(io.MultiWriter(func() *os.File {
 		dirName := path.Join(configure.Config.GetString("logDir"),
-			time.Now().Format(configure.Config.GetString("logDirSuffixTimeFormat")))
+			time.Now().Format(configure.Config.GetString("sysTimeFormShort")))
 		os.MkdirAll(dirName, os.ModePerm)
 		today := time.Now().Format(configure.Config.GetString("sysTimeForm"))
 		fileName := path.Join(dirName, today+".log")
@@ -44,8 +46,11 @@ func main() {
 
 	app.Use(requestLogger)
 	app.Use(recover.New())
-	// app.RegisterView(iris.HTML("./web/views", ".html"))
 	app.HandleDir("/content", "./web/content")
+	pugEngine := iris.Django("./web/views", ".html")
+	pugEngine.Reload(true)
+	app.RegisterView(pugEngine)
+	// app.RegisterView(iris.HTML("./web/views", ".html"))
 	var config iris.Configurator
 	serverConfigFile := configure.Config.GetString("serverConfigFile")
 	if exist, err := utils.PathIsExists(serverConfigFile); !exist {
@@ -62,16 +67,15 @@ func main() {
 
 	cfg := configure.ServerCfg{}
 	configure.Config.Unmarshal(&cfg)
-	app.Logger().Infof(`
-				_    
-		 / ___| ___  
-		\ |  _ / _ \ 
-		/ |_| | (_) |
-		\____|\___/	
-	`)
+	app.Logger().Infof(configure.AppLogo)
 	app.Logger().Debugf("load the server config: %#v", pretty.Formatter(cfg))
+
+	mvc.New(app.Party("/index")).Handle(new(controllers.IndexController))
+	mvc.New(app.Party("/login")).Handle(new(controllers.LoginController))
 	app.Run(
-		iris.Addr(":"+configure.Config.GetString("ServerIp")),
+		iris.Addr(fmt.Sprintf("%s:%s",
+			configure.Config.GetString("serverIp"),
+			configure.Config.GetString("serverPort"))),
 		iris.WithoutServerError(iris.ErrServerClosed),
 		config,
 	)

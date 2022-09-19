@@ -1,2 +1,2 @@
-# myBlob
-A tiny blob for DDGRCF
+# DDGBlog
+A tiny blog for DDGRCF

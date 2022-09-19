@@ -27,7 +27,8 @@ func MysqlInit(configFile string) {
 		panic(fmt.Sprintf("unmarshal the config failed! Code: %v", err))
 	}
 
-	mysqlConn := "root:root@tcp(" + mysqlConfig.MysqlIp + ":" + mysqlConfig.MysqlPort + "/mysql)"
+	mysqlConn := "root:9696@tcp(" + mysqlConfig.MysqlIp + ":" + mysqlConfig.MysqlPort + ")/test"
+	fmt.Println(mysqlConn)
 	database, err := sqlx.Open("mysql", mysqlConn)
 	if err != nil {
 		panic(fmt.Sprintf("create the database failed! Code: %v", err))
