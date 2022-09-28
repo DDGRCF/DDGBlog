@@ -1,0 +1,39 @@
+{
+	"appName": "DDGBlog",
+	"serverPort": 12000,
+	"serverIp": "127.0.0.1",
+	"sysTimeForm": "2006-01-02 15:20:05",
+	"sysTimeFormShort": "2006-01-02",
+
+	"log": {
+		"level": "debug",
+		"dir": "log"
+	},
+
+	"server": {
+		"fireMethodNotAllowed": true,
+		"disableStartupLog": true,
+		"enableOptimizations": true,
+		"charSet": "UTF-8"
+	},
+
+	"database": {
+		"relationDB": {
+    		"dbType": "mysql",
+			"method": "tcp",
+    		"host": "127.0.0.1",
+    		"port": 3306,
+    		"user": "root",
+    		"password": "9696",
+    		"dbName": "DDGBlogDB"
+		},
+		"unrelationDB": {
+			"dbType": "redis",
+			"method": "tcp",
+			"host": "127.0.0.1",
+			"port": 6379,
+			"password": "",
+			"prefix": ""
+		}
+	}
+}

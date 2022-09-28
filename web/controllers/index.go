@@ -11,7 +11,7 @@ type IndexController struct {
 }
 
 func (c *IndexController) Get() mvc.Result {
-	appName := configure.Config.GetString("appName")
+	appName := configure.ServerConfig.GetString("appName")
 
 	return mvc.View{
 		Name: "index/index.html",

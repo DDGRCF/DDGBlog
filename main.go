@@ -8,28 +8,35 @@ import (
 	"time"
 
 	"github.com/DDGRCF/DDGBlog/configure"
-	"github.com/DDGRCF/DDGBlog/utils"
-	"github.com/DDGRCF/DDGBlog/web/controllers"
+	"github.com/DDGRCF/DDGBlog/database"
+	"github.com/DDGRCF/DDGBlog/routers"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
-	"github.com/kataras/iris/v12/mvc"
-	"github.com/kr/pretty"
 )
 
 func main() {
-	// 创建Iris框架
+	// 初始数据库
+	database.InstanceReDB()
+	database.InstanceUnReDB()
+
+	// 初始化app
 	app := iris.New()
-	app.Logger().SetLevel(configure.Config.GetString("level"))
+
+	logCfg := configure.LogCfg{}
+	configure.CommonConfig.UnmarshalKey("Log", &logCfg)
+
+	// 初始化server level
+	app.Logger().SetLevel(logCfg.Level)
 	app.Logger().SetOutput(io.MultiWriter(func() *os.File {
-		dirName := path.Join(configure.Config.GetString("logDir"),
-			time.Now().Format(configure.Config.GetString("sysTimeFormShort")))
+		dirName := path.Join(logCfg.Dir,
+			time.Now().Format(configure.ServerConfig.GetString("sysTimeFormShort")))
 		os.MkdirAll(dirName, os.ModePerm)
-		today := time.Now().Format(configure.Config.GetString("sysTimeForm"))
+		today := time.Now().Format(configure.ServerConfig.GetString("sysTimeForm"))
 		fileName := path.Join(dirName, today+".log")
 		fd, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 		if err != nil {
-			panic(fmt.Sprintf("open file %v failed! Code: %v", fileName, err))
+			panic(fmt.Sprintf("Open file %v failed! Code: %v", fileName, err))
 		}
 		return fd
 	}(), os.Stdout))
@@ -48,35 +55,23 @@ func main() {
 	app.Use(recover.New())
 	app.HandleDir("/content", "./web/content")
 	pugEngine := iris.Django("./web/views", ".html")
-	pugEngine.Reload(true)
-	app.RegisterView(pugEngine)
-	// app.RegisterView(iris.HTML("./web/views", ".html"))
-	var config iris.Configurator
-	serverConfigFile := configure.Config.GetString("serverConfigFile")
-	if exist, err := utils.PathIsExists(serverConfigFile); !exist {
-		config = iris.WithConfiguration(iris.Configuration{
-			FireMethodNotAllowed: true,
-			DisableStartupLog:    true,
-			EnableOptimizations:  true,
-			Charset:              "UTF-8",
-		})
-		app.Logger().Warnf("load server config failed! Code: %v! use default server config", err)
-	} else {
-		config = iris.WithConfiguration(iris.YAML(serverConfigFile))
+	if configure.CommonConfig.GetString("mode") == "development" {
+		pugEngine.Reload(true)
 	}
 
-	cfg := configure.ServerCfg{}
-	configure.Config.Unmarshal(&cfg)
-	app.Logger().Infof(configure.AppLogo)
-	app.Logger().Debugf("load the server config: %#v", pretty.Formatter(cfg))
+	app.RegisterView(pugEngine)
+	var irisConfig iris.Configurator
+	_irisConfig := iris.Configuration{}
+	configure.CommonConfig.UnmarshalKey("server", &_irisConfig)
+	irisConfig = iris.WithConfiguration(_irisConfig)
 
-	mvc.New(app.Party("/index")).Handle(new(controllers.IndexController))
-	mvc.New(app.Party("/login")).Handle(new(controllers.LoginController))
+	routers.InitRouters(app)
+
 	app.Run(
 		iris.Addr(fmt.Sprintf("%s:%s",
-			configure.Config.GetString("serverIp"),
-			configure.Config.GetString("serverPort"))),
+			configure.CommonConfig.GetString("serverIp"),
+			configure.CommonConfig.GetString("serverPort"))),
 		iris.WithoutServerError(iris.ErrServerClosed),
-		config,
+		irisConfig,
 	)
 }

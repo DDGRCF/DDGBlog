@@ -22,15 +22,13 @@ html {
   flex: 1;
 }
 .g-holygrail-nav {
-  flex: 0 0 10em;
+  flex: 0 0 15em;
   order: -1;
-  background-color: red;
   margin-right: 2em;
   margin-left: 4em;
 }
 .g-holygrail-ads {
   flex: 0 0 20%;
-  background-color: blue;
   margin-right: 2em;
   margin-left: 4em;
 }

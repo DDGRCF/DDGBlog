@@ -1,9 +1,0 @@
-{
-	"appName": "DDG Blog",
-	"level": "debug",
-	"serverPort": "12000",
-	"serverIp": "127.0.0.1",
-	"logDir": "log",
-	"sysTimeForm": "2006-01-02 15:20:05",
-	"sysTimeFormShort": "2006-01-02"
-}
