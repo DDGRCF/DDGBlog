@@ -16,7 +16,7 @@ func InitRouters(app *iris.Application) {
 	})
 
 	app.Use(middlewares.Cors)
-	app.Use(middlewares.GetJWT().Serve)
+	// app.Use(middlewares.GetJWT().Serve)
 	initIndexRouters(app, session)
 	initLoginRouters(app, session)
 }
@@ -30,6 +30,7 @@ func initLoginRouters(app *iris.Application, session *sessions.Sessions) {
 
 func initIndexRouters(app *iris.Application, session *sessions.Sessions) {
 	indexParty := app.Party("/index")
+	indexParty.Use(middlewares.GetJWT().Serve)
 	indexPartyMvc := mvc.New(indexParty)
 	indexPartyMvc.Register(session.Start)
 	indexPartyMvc.Handle(new(controllers.IndexController))

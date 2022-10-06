@@ -23,16 +23,11 @@ func GetJWT() *jwtmiddleware.Middleware {
 		ErrorHandler: func(ctx iris.Context, err error) {
 			if err != nil {
 				log.Println(err)
+				ctx.Request().Header.Set("AuthenticationStatus", configure.JWT_AUTHORIZED_FAILURE_STR)
+			} else {
+				ctx.Request().Header.Set("AuthenticationStatus", configure.JWT_AUTHORIZED_SUCCESS_STR)
 			}
-
-			result := models.Result{Code: 401, Msg: configure.JWT_AUTHORIZED_FAILURE_STR}
-			err = ctx.JSON(iris.Map{
-				"Code": result.Code,
-				"Msg":  result.Msg,
-			})
-			if err != nil {
-				log.Println(err)
-			}
+			ctx.Next()
 		},
 	})
 	return jwtHandler
@@ -40,16 +35,29 @@ func GetJWT() *jwtmiddleware.Middleware {
 
 func GenerateToken(ctx iris.Context, user models.User) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"nick_name": user.Name,                                                //用户信息
-		"session":   user.Email + "_" + user.Name,                             //session
-		"id":        user.Email,                                               //用户信息
-		"iss":       configure.CommonConfig.GetString("appName"),              //签发者
-		"iat":       time.Now().Unix(),                                        //签发时间
-		"jti":       "9527",                                                   //jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
-		"exp":       time.Now().Add(10 * time.Hour * time.Duration(1)).Unix(), //过期时间
+		"name":    user.Name,                                                //用户信息
+		"session": user.Email + "_" + user.Name,                             //session
+		"email":   user.Email,                                               //用户信息
+		"iss":     configure.CommonConfig.GetString("appName"),              //签发者
+		"iat":     time.Now().Unix(),                                        //签发时间
+		"jti":     "9527",                                                   //jwt的唯一身份标识，主要用来作为一次性token,从而回避重放攻击。
+		"exp":     time.Now().Add(10 * time.Hour * time.Duration(1)).Unix(), //过期时间
 	})
 
 	tokenString, _ := token.SignedString([]byte(JwtKey))
 	ctx.Application().Logger().Debugf("Issue the Token, Message: %v", tokenString)
 	return tokenString
+}
+
+func ParseToken(tokenStr string) (claims jwt.MapClaims, err error) {
+	token, err := jwt.Parse(tokenStr, func(*jwt.Token) (interface{}, error) {
+		return JwtKey, nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	claims = token.Claims.(jwt.MapClaims)
+	return
 }

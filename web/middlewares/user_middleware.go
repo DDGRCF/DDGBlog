@@ -33,7 +33,8 @@ func BeforePostFormCheckFormat(ctx iris.Context) {
 				json.Unmarshal(userByte, &userModel)
 				if userModel.Email == emailAddr && userModel.Password == password {
 					ctx.Application().Logger().Debugf("[Login][%v][%v] success!", userModel.Email, userModel.Password)
-					GenerateToken(ctx, userModel)
+					jwtString := GenerateToken(ctx, userModel)
+					ctx.Application().Logger().Debugf("[Login][%v][%v] login %v", emailAddr, password, jwtString)
 					ctx.Next()
 				} else {
 					ctx.Application().Logger().Debugf("[Login][%v][%v] fail!", userModel.Email, userModel.Password)

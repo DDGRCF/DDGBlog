@@ -24,7 +24,9 @@ func (login *LoginController) Get() mvc.Result {
 }
 
 func (login *LoginController) PostForm() mvc.Result {
-
+	for k, v := range login.Ctx.FormValues() {
+		login.Ctx.Application().Logger().Debugf("%v: %v", k, v)
+	}
 	return mvc.Response{
 		ContentType: "text/html",
 		Code:        200,
