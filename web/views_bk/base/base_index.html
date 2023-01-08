@@ -1,0 +1,18 @@
+{% extends "/base/base.html" %} 
+{% block main %}
+<div class="g-holygrail-margin-body">
+    <div class="g-holygrail-body">
+        <main class="g-holygrail-content">
+            {% block content %} {% endblock %}
+        </main>
+        <nav class="g-holygrail-nav">
+            <h1>
+                {% include "/base/main_nav.html" %}
+            </h1>
+        </nav>
+        <aside class="g-holygrail-ads">
+            {% include "/base/main_aside.html" %}
+        </aside>
+    </div>
+</div>
+{% endblock %}

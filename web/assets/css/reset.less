@@ -1,0 +1,120 @@
+@holygrail-ads-offset: 20%;
+@holygrail-nav-offset: 15em;
+@holygrail-margin-top: 2em;
+@holygrail-border-margin: 4em;
+@holygrail-content-margin: 2em;
+
+
+html {
+    height: 100%;
+}
+
+
+.g-body {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.g-main {
+    flex: 1;
+}
+
+.g-holygrail-body {
+    display: flex;
+    flex: 1;
+}
+
+.g-holygrail-margin-body {
+    .g-holygrail-body(); 
+    margin-top: @holygrail-margin-top;
+}
+
+.g-holygrail-content {
+    flex: 1;
+}
+
+.g-holygrail-nav {
+    flex: 0 0 @holygrail-nav-offset;
+    order: -1;
+    margin-right: @holygrail-content-margin;
+    margin-left: @holygrail-border-margin;
+}
+
+
+.g-holygrail-ads {
+    flex: 0 0 @holygrail-ads-offset;
+    margin-right: @holygrail-content-margin;
+    margin-left: @holygrail-border-margin;
+}
+
+.g-holygrail-nav-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #c2d6d6;
+}
+
+@media (max-width: 768px) {
+    .g-holygrail-body {
+        flex-direction: column;
+        flex: 1;
+    }
+    .g-holygrail-nav,
+    .g-holygrail-ads,
+    .g-holygrail-content {
+        flex: auto;
+    }
+} 
+
+.g-login-body {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+.bd-placeholder-img {
+  font-size: 1.125rem;
+  text-anchor: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+@media (min-width: 768px) {
+  .bd-placeholder-img-lg {
+    font-size: 3.5rem;
+  }
+}

@@ -53,20 +53,22 @@ func main() {
 
 	app.Use(requestLogger)
 	app.Use(recover.New())
-	app.HandleDir("/content", "./web/content")
-	pugEngine := iris.Django("./web/views", ".html")
-	if configure.CommonConfig.GetString("mode") == "development" {
-		pugEngine.Reload(true)
-	}
+	// app.HandleDir("/content", "./web/content")
+	// pugEngine := iris.Django("./web/views", ".html")
+	// DDGBLOG_MODE="development" 要全部大写
+	// if configure.CommonConfig.GetString("mode") == "development" {
+	// 	app.Logger().Debug("Load dynamic template views")
+	// 	pugEngine.Reload(true)
+	// }
 
-	app.RegisterView(pugEngine)
+	// app.RegisterView(pugEngine)
 	var irisConfig iris.Configurator
 	_irisConfig := iris.Configuration{}
 	configure.CommonConfig.UnmarshalKey("server", &_irisConfig)
 	irisConfig = iris.WithConfiguration(_irisConfig)
 
 	routers.InitRouters(app)
-
+	app.Logger().Info(configure.AppLogo)
 	app.Run(
 		iris.Addr(fmt.Sprintf("%s:%s",
 			configure.CommonConfig.GetString("serverIp"),

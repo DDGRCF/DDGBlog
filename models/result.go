@@ -1,6 +1,9 @@
 package models
 
 import (
+	"encoding/json"
+	"strings"
+
 	"github.com/DDGRCF/DDGBlog/configure"
 )
 
@@ -22,8 +25,18 @@ func NewResult(data interface{}, c int, m ...string) *Result {
 	}
 
 	if len(m) > 0 {
-		r.Msg = m[0]
+		r.Msg = strings.Join(m, ", ")
 	}
 
 	return r
+}
+
+func (r *Result) GetUserModel() (user *User, err error) {
+	userByte, err := json.Marshal(r.Data)
+	if err != nil {
+		return user, err
+	} else {
+		err = json.Unmarshal(userByte, &user)
+	}
+	return user, err
 }

@@ -143,7 +143,7 @@ func initDefault() {
 	replacer := strings.NewReplacer(" ", "_") // replace
 	CommonConfig.SetEnvKeyReplacer(replacer)
 	CommonConfig.BindEnv("mode")
-	CommonConfig.SetEnvPrefix(ServerConfig.GetString("appName"))
+	CommonConfig.SetEnvPrefix(CommonConfig.GetString("appName"))
 
 	CommonConfig.AllowEmptyEnv(true)
 	CommonConfig.AutomaticEnv()

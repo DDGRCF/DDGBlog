@@ -5,12 +5,10 @@ import (
 	"github.com/DDGRCF/DDGBlog/web/middlewares"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/mvc"
-	"github.com/kataras/iris/v12/sessions"
 )
 
 type LoginController struct {
-	Ctx     iris.Context
-	Session *sessions.Session
+	Ctx iris.Context
 }
 
 func (login *LoginController) Get() mvc.Result {
@@ -23,17 +21,23 @@ func (login *LoginController) Get() mvc.Result {
 	}
 }
 
-func (login *LoginController) PostForm() mvc.Result {
+func (login *LoginController) PostForm() mvc.Response {
 	for k, v := range login.Ctx.FormValues() {
 		login.Ctx.Application().Logger().Debugf("%v: %v", k, v)
 	}
+
+	token := login.Ctx.Request().Header.Get("Token")
+
 	return mvc.Response{
-		ContentType: "text/html",
-		Code:        200,
-		Text:        "<h1 align=\"center\" >Weclome</h1>",
+		ContentType: "application/json",
+		Object: iris.Map{
+			"msg":   configure.USER_LOGIN_SUCCESS_STR,
+			"code":  configure.CHECK_LOGIN_SUCCESS_CODE,
+			"token": token,
+		},
 	}
 }
 
 func (login *LoginController) BeforeActivation(before mvc.BeforeActivation) {
-	before.Handle("POST", "/form", "PostForm", middlewares.BeforePostFormCheckFormat)
+	before.Handle("POST", "/form", "PostForm", middlewares.UserLoginCheck)
 }

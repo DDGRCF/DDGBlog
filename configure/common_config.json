@@ -1,5 +1,5 @@
 {
-	"appName": "DDGBlog",
+	"appName": "ddg server",
 	"serverPort": 12000,
 	"serverIp": "127.0.0.1",
 	"sysTimeForm": "2006-01-02 15:20:05",

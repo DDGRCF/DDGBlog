@@ -10,8 +10,8 @@ type IndexController struct {
 	Ctx iris.Context
 }
 
-func (c *IndexController) Get() mvc.Result {
-	appName := configure.ServerConfig.GetString("appName")
+func (index *IndexController) Get() mvc.Result {
+	appName := configure.CommonConfig.GetString("appName")
 
 	return mvc.View{
 		Name: "index/index.html",

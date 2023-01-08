@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+    {% include "/base/head.html" %}
+    <script type="text/javascript">
+        $(function() {
+            const loginForm = {
+                data() {
+                    return {
+                        email: "email",
+                        password: "password"
+                    }
+                },
+                methods: {
+                    submitClick(event) {
+                        event.preventDefault();
+                        this.email = $("#loginEmailInput").val();
+                        this.password= $("#loginPasswordInput").val();
+                        axios({
+                            method: "post",
+                            url: "login/form",
+                            data: {
+                                "email": this.email,
+                                "password": this.password
+                            },
+                            transformRequest: [
+                                function (data) {
+                                    let ret = ''
+                                    for (let it in data) {
+                                       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                                    }
+                                    ret = ret.substring(0, ret.lastIndexOf('&'));
+                                    return ret
+                                }
+                            ],
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'  
+                            }
+
+                        })
+                        .then(function (response) {
+                            if (response.data.code === 100)  {
+                                console.log(response.data)
+                                sessionStorage.setItem("token", response.data.token)
+                                $(location).attr("href", "index")
+                            } 
+                        })
+                        .catch(function (error) {
+                            console.log(error)
+                        })
+                    }
+                }
+            }
+            var app = Vue.createApp(loginForm)
+            app.mount("#login-form")
+            
+        });
+    </script>
+    <body class="text-center g-login-body">
+        <main class="form-signin">
+            <form id="login-form">
+                <img class="mb-4" src="/content/img/brand/blob-logo.svg" alt="" width="96" height="96">
+                <h1 class="h3 mb-3 fw-normal">请登录</h1>
+
+                <div class="text-start form-floating">
+                    <input type="email" class="form-control" name="emailInput" id="loginEmailInput" placeholder="name@example.com">
+                    <label for="emailInput">Email address</label>
+                </div>
+                <div class="text-start form-floating">
+                    <input type="password" class="form-control" name="passwordInput" id="loginPasswordInput" placeholder="Password">
+                    <label for="passwordInput">Password</label>
+                </div>
+
+                <div class="text-start checkbox mb-3">
+                    <label>
+                        <input type="checkbox" value="remember-me">
+                    </label>
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit" @click="submitClick">登录</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2022 Personal, DDGRCF</p>
+            </form>
+        </main>
+    </body>
+</html>

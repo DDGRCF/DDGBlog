@@ -23,17 +23,17 @@ func GetJWT() *jwtmiddleware.Middleware {
 		ErrorHandler: func(ctx iris.Context, err error) {
 			if err != nil {
 				log.Println(err)
-				ctx.Request().Header.Set("AuthenticationStatus", configure.JWT_AUTHORIZED_FAILURE_STR)
-			} else {
-				ctx.Request().Header.Set("AuthenticationStatus", configure.JWT_AUTHORIZED_SUCCESS_STR)
 			}
-			ctx.Next()
+			ctx.JSON(iris.Map{
+				"msg":  configure.JWT_AUTHORIZED_FAILURE_STR,
+				"code": configure.JWT_AUTHORIZED_FAILURE_CODE,
+			})
 		},
 	})
 	return jwtHandler
 }
 
-func GenerateToken(ctx iris.Context, user models.User) string {
+func GenerateToken(ctx iris.Context, user *models.User) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"name":    user.Name,                                                //用户信息
 		"session": user.Email + "_" + user.Name,                             //session
@@ -60,4 +60,12 @@ func ParseToken(tokenStr string) (claims jwt.MapClaims, err error) {
 
 	claims = token.Claims.(jwt.MapClaims)
 	return
+}
+
+func DefaultJwtAuth(ctx iris.Context) {
+	ctx.JSON(iris.Map{
+		"msg":  configure.JWT_AUTHORIZED_SUCCESS_STR,
+		"code": configure.JWT_AUTHORIZED_SUCCESS_CODE,
+	})
+
 }
