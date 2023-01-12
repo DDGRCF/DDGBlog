@@ -17,6 +17,7 @@
       </div>
     </template>
   </el-upload>
+  <div v-for="item in 80" :key="item">{{ item }}</div>
 </template>
 
 <script lang="ts">

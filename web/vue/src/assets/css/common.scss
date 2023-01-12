@@ -1,0 +1,30 @@
+@mixin custom-scrollbar {
+  overflow: overlay;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: rgb(255, 255, 255, 000);
+    border-radius: 2px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #d1d1d1;
+    border-radius: 5px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #aaaaaa;
+  }
+  &::-webkit-scrollbar-corner {
+    background: #515251;
+  }
+}
+
+$textarea-color: #ffffff;
+$textarea-shadow: rgb(199, 193, 193);
+$textarea-padding: 1em;
+@mixin custom-textarea {
+  background-color: $textarea-color;
+  box-shadow: 0 0 0.5em $textarea-shadow;
+  padding: $textarea-padding;
+}

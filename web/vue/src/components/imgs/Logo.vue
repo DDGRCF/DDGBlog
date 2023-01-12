@@ -1,7 +1,7 @@
 <template>
   <div class="logo" ref="logo">
     <!-- <img class="img" :src="url" :width="width" :height="height" /> -->
-    LOGO
+    <span><b>LOGO</b></span>
   </div>
 </template>
 

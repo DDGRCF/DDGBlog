@@ -6,7 +6,7 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import "element-plus/theme-chalk/display.css";
 import "element-plus/dist/index.css";
 import store from "./store";
-// import mitt from "mitt";
+import Particles from "vue3-particles";
 
 const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -17,5 +17,5 @@ app.use(router);
 app.use(store);
 
 app.use(ElementPlus);
-// app.config.globalProperties.$bus = mitt;
+app.use(Particles);
 app.mount("#app");

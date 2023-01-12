@@ -29,8 +29,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ElMessage } from "element-plus";
-import axios from "axios";
 import LogoView from "./imgs/Logo.vue";
+import fetch from "@/api/fetch";
 
 export default defineComponent({
   name: "WebHeader",
@@ -39,30 +39,42 @@ export default defineComponent({
   },
   data() {
     return {
-      menuUrl: {
-        hello: "http://localhost:12000/hello",
-        home: "/api/home",
-        tools: {
-          obb: {
-            nms: "/api/tools/obb/nms",
-            submit: "/api/tools/obb/submit",
+      menuStatus: {
+        activeIndex: "0",
+        menuUrl: {
+          hello: "/hello",
+          home: "/api/home",
+          tools: {
+            obb: {
+              nms: "/api/tools/obb/nms",
+              submit: "/api/tools/obb/submit",
+            },
           },
         },
       },
-      activeIndex: "0",
     };
   },
   methods: {
     handleSelect(key: string, keyPath: string[]) {
-      if (key === "0") {
-        this.$router.push(this.menuUrl.home);
-      } else if (key === "3-1-1") {
-        this.$router.push(this.menuUrl.tools.obb.submit);
-      } else if (key === "3-1-2") {
-        this.$router.push(this.menuUrl.tools.obb.nms);
+      if (key.startsWith("0")) {
+        this.$router.push(this.menuStatus.menuUrl.home);
+        this.menuStatus.activeIndex = key;
+      } else if (key.startsWith("3")) {
+        this.$store.commit("changeUpInd", "3");
+        if (key.startsWith("3-1")) {
+          if (key === "3-1-1") {
+            this.$router.push(this.menuStatus.menuUrl.tools.obb.submit);
+            this.menuStatus.activeIndex = key;
+            this.$store.commit("changeActInd", "1-1");
+          } else if (key === "3-1-2") {
+            this.$router.push(this.menuStatus.menuUrl.tools.obb.nms);
+            this.menuStatus.activeIndex = key;
+            this.$store.commit("changeActInd", "1-2");
+          }
+        }
       } else {
-        axios
-          .get(this.menuUrl.hello)
+        fetch
+          .get(this.menuStatus.menuUrl.hello)
           .then(function (response) {
             let responseData = response.data;
             console.log(responseData.msg);
@@ -79,6 +91,11 @@ export default defineComponent({
           });
       }
       console.log(key, keyPath);
+    },
+  },
+  computed: {
+    activeIndex() {
+      return this.$store.getters.getActInd(true);
     },
   },
 });
