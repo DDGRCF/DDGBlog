@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/DDGRCF/DDGBlog/configure"
-	"github.com/DDGRCF/DDGBlog/models"
+	"github.com/DDGRCF/DDGBlog/conf"
+	"github.com/DDGRCF/DDGBlog/model"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
@@ -20,13 +20,13 @@ func GetReDB() *gorm.DB {
 
 func CreateTable() {
 	GetReDB().AutoMigrate(
-		&models.User{},
+		&model.User{},
 	)
 }
 
 func InstanceReDB() {
-	dbCfg := configure.ReDBCfg{}
-	configure.CommonConfig.UnmarshalKey("DataBase.RelationDB", &dbCfg)
+	dbCfg := conf.ReDBCfg{}
+	conf.CommonConfig.UnmarshalKey("DataBase.RelationDB", &dbCfg)
 	dbPath := fmt.Sprintf("%s:%s@%s(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		dbCfg.User, dbCfg.Password, dbCfg.Method, dbCfg.Host, dbCfg.Port, dbCfg.DBName)
 

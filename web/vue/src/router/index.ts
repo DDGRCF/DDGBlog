@@ -19,33 +19,24 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("@/views/home/HomeView.vue"),
       },
       {
-        path: "tools",
-        name: "tools",
-        component: () => import("@/views/tools/ToolsView.vue"),
+        path: "tool",
+        name: "tool",
+        component: () => import("@/views/tool/ToolView.vue"),
         children: [
           {
             path: "obb/nms",
             name: "nms",
-            component: () => import("@/views/tools/obb/NmsView.vue"),
+            component: () => import("@/views/tool/obb/NmsView.vue"),
           },
           {
             path: "obb/submit",
             name: "submit",
-            component: () => import("@/views/tools/obb/SubmitView.vue"),
+            component: () => import("@/views/tool/obb/SubmitView.vue"),
           },
         ],
       },
     ],
   },
-  // {
-  //   path: "/about",
-  //   name: "about",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  // },
 ];
 
 const router = createRouter({

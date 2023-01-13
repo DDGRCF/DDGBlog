@@ -146,17 +146,15 @@ export default defineComponent({
       align-items: center;
       background-color: #eeeeee;
     }
-    & > .affix-main {
-      // position: absolute;
-      // left: 0;
-      // right: 0;
-      height: 100%;
-    }
-    & > .affix-right {
-      .avatar {
-        margin-top: 20px;
-        background-color: white;
-      }
+  }
+  & > .affix-main {
+    height: 100%;
+  }
+
+  & > .affix-right {
+    .avatar {
+      // background-color: white;
+      margin-top: 20px;
     }
   }
 }

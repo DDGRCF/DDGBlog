@@ -3,7 +3,7 @@ package database
 import (
 	"fmt"
 
-	"github.com/DDGRCF/DDGBlog/configure"
+	"github.com/DDGRCF/DDGBlog/conf"
 	"github.com/kataras/iris/v12/sessions/sessiondb/redis"
 )
 
@@ -16,8 +16,8 @@ func GetUnReDB() *redis.Database {
 }
 
 func InstanceUnReDB() {
-	dbCfg := configure.UnReDBCfg{}
-	configure.CommonConfig.UnmarshalKey("DataBase.UnRelationDB", &dbCfg)
+	dbCfg := conf.UnReDBCfg{}
+	conf.CommonConfig.UnmarshalKey("DataBase.UnRelationDB", &dbCfg)
 	unReDB = redis.New(redis.Config{
 		Network:   dbCfg.Method,
 		Addr:      fmt.Sprintf("%v:%v", dbCfg.Host, dbCfg.Port),

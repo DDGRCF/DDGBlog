@@ -7,9 +7,9 @@ import (
 	"path"
 	"time"
 
-	"github.com/DDGRCF/DDGBlog/configure"
+	"github.com/DDGRCF/DDGBlog/conf"
 	"github.com/DDGRCF/DDGBlog/database"
-	"github.com/DDGRCF/DDGBlog/routers"
+	"github.com/DDGRCF/DDGBlog/router"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
@@ -23,16 +23,16 @@ func main() {
 	// 初始化app
 	app := iris.New()
 
-	logCfg := configure.LogCfg{}
-	configure.CommonConfig.UnmarshalKey("Log", &logCfg)
+	logCfg := conf.LogCfg{}
+	conf.CommonConfig.UnmarshalKey("Log", &logCfg)
 
 	// 初始化server level
 	app.Logger().SetLevel(logCfg.Level)
 	app.Logger().SetOutput(io.MultiWriter(func() *os.File {
 		dirName := path.Join(logCfg.Dir,
-			time.Now().Format(configure.ServerConfig.GetString("sysTimeFormShort")))
+			time.Now().Format(conf.ServerConfig.GetString("sysTimeFormShort")))
 		os.MkdirAll(dirName, os.ModePerm)
-		today := time.Now().Format(configure.ServerConfig.GetString("sysTimeForm"))
+		today := time.Now().Format(conf.ServerConfig.GetString("sysTimeForm"))
 		fileName := path.Join(dirName, today+".log")
 		fd, err := os.OpenFile(fileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 		if err != nil {
@@ -56,7 +56,7 @@ func main() {
 	// app.HandleDir("/content", "./web/content")
 	// pugEngine := iris.Django("./web/views", ".html")
 	// DDGBLOG_MODE="development" 要全部大写
-	// if configure.CommonConfig.GetString("mode") == "development" {
+	// if conf.CommonConfig.GetString("mode") == "development" {
 	// 	app.Logger().Debug("Load dynamic template views")
 	// 	pugEngine.Reload(true)
 	// }
@@ -64,15 +64,15 @@ func main() {
 	// app.RegisterView(pugEngine)
 	var irisConfig iris.Configurator
 	_irisConfig := iris.Configuration{}
-	configure.CommonConfig.UnmarshalKey("server", &_irisConfig)
+	conf.CommonConfig.UnmarshalKey("server", &_irisConfig)
 	irisConfig = iris.WithConfiguration(_irisConfig)
 
-	routers.InitRouters(app)
-	app.Logger().Info(configure.AppLogo)
+	router.InitRouters(app)
+	app.Logger().Info(conf.AppLogo)
 	app.Run(
 		iris.Addr(fmt.Sprintf("%s:%s",
-			configure.CommonConfig.GetString("serverIp"),
-			configure.CommonConfig.GetString("serverPort"))),
+			conf.CommonConfig.GetString("serverIp"),
+			conf.CommonConfig.GetString("serverPort"))),
 		iris.WithoutServerError(iris.ErrServerClosed),
 		irisConfig,
 	)

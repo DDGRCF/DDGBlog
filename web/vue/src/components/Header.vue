@@ -42,12 +42,12 @@ export default defineComponent({
       menuStatus: {
         activeIndex: "0",
         menuUrl: {
-          hello: "/hello",
+          hello: "/api/hello",
           home: "/api/home",
-          tools: {
+          tool: {
             obb: {
-              nms: "/api/tools/obb/nms",
-              submit: "/api/tools/obb/submit",
+              nms: "/api/tool/obb/nms",
+              submit: "/api/tool/obb/submit",
             },
           },
         },
@@ -63,11 +63,11 @@ export default defineComponent({
         this.$store.commit("changeUpInd", "3");
         if (key.startsWith("3-1")) {
           if (key === "3-1-1") {
-            this.$router.push(this.menuStatus.menuUrl.tools.obb.submit);
+            this.$router.push(this.menuStatus.menuUrl.tool.obb.submit);
             this.menuStatus.activeIndex = key;
             this.$store.commit("changeActInd", "1-1");
           } else if (key === "3-1-2") {
-            this.$router.push(this.menuStatus.menuUrl.tools.obb.nms);
+            this.$router.push(this.menuStatus.menuUrl.tool.obb.nms);
             this.menuStatus.activeIndex = key;
             this.$store.commit("changeActInd", "1-2");
           }

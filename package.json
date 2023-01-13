@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "async-validator": "^4.2.5"
+  }
+}
