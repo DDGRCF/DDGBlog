@@ -51,10 +51,11 @@ export default defineComponent({
     }
     .main {
       flex: 1 1 auto;
+      @include custom-scrollbar;
     }
     .footer {
       flex: 0 1 0;
-      margin-bottom: 0.8em;
+      margin-bottom: 0.5em;
     }
   }
 }

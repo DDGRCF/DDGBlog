@@ -10,6 +10,7 @@ import (
 	"github.com/DDGRCF/DDGBlog/conf"
 	"github.com/DDGRCF/DDGBlog/database"
 	"github.com/DDGRCF/DDGBlog/router"
+	"github.com/gookit/goutil/dump"
 	"github.com/kataras/iris/v12"
 	"github.com/kataras/iris/v12/middleware/logger"
 	"github.com/kataras/iris/v12/middleware/recover"
@@ -53,6 +54,11 @@ func main() {
 
 	app.Use(requestLogger)
 	app.Use(recover.New())
+
+	// print setting
+	app.Logger().Info(dump.Format(conf.CommonConfig.AllSettings()))
+
+	// mvc
 	// app.HandleDir("/content", "./web/content")
 	// pugEngine := iris.Django("./web/views", ".html")
 	// DDGBLOG_MODE="development" 要全部大写
@@ -60,8 +66,8 @@ func main() {
 	// 	app.Logger().Debug("Load dynamic template views")
 	// 	pugEngine.Reload(true)
 	// }
-
 	// app.RegisterView(pugEngine)
+
 	var irisConfig iris.Configurator
 	_irisConfig := iris.Configuration{}
 	conf.CommonConfig.UnmarshalKey("server", &_irisConfig)

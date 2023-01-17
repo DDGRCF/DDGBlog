@@ -1,17 +1,41 @@
 import axios from "axios";
-import storage from "@/utils/storage";
-import router from "@/router";
-import { ElLoading } from "element-plus";
+import { ElLoading, ElMessage } from "element-plus";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { respType } from "Fetch";
+import { respCode } from "@/types";
 
 let loadingInstance = ElLoading.service();
 loadingInstance.close();
-
-const fetch = axios.create({
+const baseConfig = {
   baseURL: process.env.VUE_APP_SRV,
   timeout: 30000,
-});
+};
 
+const fetch = axios.create(baseConfig);
+
+// const fetch_clear = axios.create(baseConfig);
+
+// fetch_clear.interceptors.request.use(
+//   function (config: AxiosRequestConfig) {
+//     return config;
+//   },
+//   function (err) {
+//     return Promise.reject(err);
+//   }
+// );
+
+// fetch_clear.interceptors.response.use(
+//   function (resp: AxiosResponse) {
+//     console.log("recv: ", resp.data);
+//     return resp;
+//   },
+//   function (err) {
+//     return Promise.reject(err);
+//   }
+// );
+
+// Promise.reject 和 Promise.resolve 是传输失败和成功的信息给catch或者then
+// catch(function (reason) {}) 或者 then(function (result) {})
 fetch.interceptors.request.use(
   function (config: AxiosRequestConfig) {
     loadingInstance = ElLoading.service();
@@ -27,15 +51,24 @@ fetch.interceptors.response.use(
   function (resp: AxiosResponse) {
     loadingInstance.close();
     console.log("recv: ", resp.data);
-    if (resp.data.code === "400") {
-      console.log("error");
+    const data = resp.data as respType;
+    if (data.code === respCode.failure) {
+      ElMessage({
+        message: "error: " + (resp.data as respType).msg,
+        type: "error",
+      });
     }
     return resp;
   },
   function (err) {
     loadingInstance.close();
+    ElMessage({
+      message: "error: " + err,
+      type: "error",
+    });
     return Promise.reject(err);
   }
 );
 
+// export { fetch_clear };
 export default fetch;

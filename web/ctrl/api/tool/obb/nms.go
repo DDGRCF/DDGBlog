@@ -32,16 +32,19 @@ func getMaxSize(ctx iris.Context) {
 }
 
 func uploadHandler(ctx iris.Context) {
-	_, ret, err := ctx.UploadFormFiles("./storage/uploads", beforeFileSave)
-	ctx.Application().Logger().Println(ret, err)
+	_, ret, err := ctx.UploadFormFiles(conf.GetUploadPath(), beforeFileSave)
+	ctx.Application().Logger().Println(ctx.FormValue("scoreThr")) // 这个能够获得值
+	ctx.Application().Logger().Println(ctx.FormValue("iouThr"))
 	var response model.Response
 	if (err != nil) {
+		ctx.Application().Logger().Errorf("Recv %v files, %v", ret, err)
 		response = model.Response{
 			Msg: conf.FAILURE_CODE_STR,
 			Code: conf.FAILURE_CODE,
 			Data: fmt.Sprintf("上传失败, %v", err),
 		}
 	} else {
+		ctx.Application().Logger().Infof("Recv %v files", ret);
 		response = model.Response{
 			Msg: conf.SUCCESS_CODE_STR,
 			Code: conf.SUCCESS_CODE,

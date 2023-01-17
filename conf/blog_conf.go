@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/gookit/goutil/dump"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -73,7 +72,7 @@ var defLogConfig = LogCfg{
 
 var defStorageConfig = Storage{
 	Root: "storage",
-	Upload: "upload",
+	Upload: "uploads",
 }
 
 var defCommonConfig = CommonCfg{
@@ -207,5 +206,4 @@ func initDefault() {
 		}
 	}
 
-	log.Println(dump.Format(CommonConfig.AllSettings()))
 }

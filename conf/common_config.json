@@ -6,7 +6,7 @@
 	"sysTimeFormShort": "2006-01-02",
 	"storage": {
 		"root": "storage",
-		"upload": "upload"
+		"upload": "uploads"
 	},
 	"log": {
 		"level": "debug",

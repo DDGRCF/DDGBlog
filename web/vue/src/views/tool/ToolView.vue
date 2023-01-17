@@ -98,7 +98,7 @@ export default defineComponent({
       },
       menuStatus: {
         isCollapse: false,
-        collapseSize: 200,
+        collapseSize: 250,
         menuUrl: {
           tool: {
             obb: {
@@ -120,9 +120,9 @@ export default defineComponent({
     watchComponentWidth() {
       let clientWidth = (this.$refs.toolsLeftSide as typeof ElAside)?.$el
         ?.clientWidth;
-      if (clientWidth) {
-        this.menuStatus.isCollapse = clientWidth < this.menuStatus.collapseSize;
-      }
+      // if (clientWidth) {
+      //   this.menuStatus.isCollapse = clientWidth < this.menuStatus.collapseSize;
+      // }
     },
     handleSelect(key: string, keyPath: string[]) {
       this.$store.commit("changeUpInd", "3");
@@ -154,7 +154,7 @@ $padding-size: 5px;
   left: 0;
   right: 0;
   z-index: 1;
-  height: calc(100% - 150px);
+  height: calc(100% - 100px);
 
   & > .tool-left {
     height: 100%;
@@ -164,18 +164,17 @@ $padding-size: 5px;
       flex-direction: column;
       height: 100%;
       $shadow-color: rgb(199, 193, 193);
-      margin-left: 20px;
       & > .menu-title {
         justify-content: center;
         align-items: center;
-        padding: $padding-size;
         font-weight: bold;
         box-shadow: 0 0 0.5em $shadow-color;
+        border: black;
       }
       & > .menu-content {
         @include custom-scrollbar;
         flex: auto;
-        margin-top: 10px;
+        margin-top: 5px;
         box-shadow: 0 0 0.5em $shadow-color;
       }
     }
@@ -184,6 +183,7 @@ $padding-size: 5px;
 
 $context-color: #ffffff;
 .tools {
+  display: flex;
   height: 100%;
   left: 0;
   right: 0;

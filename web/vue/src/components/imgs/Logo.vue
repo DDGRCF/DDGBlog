@@ -1,29 +1,23 @@
 <template>
-  <div class="logo" ref="logo">
-    <!-- <img class="img" :src="url" :width="width" :height="height" /> -->
-    <span><b>LOGO</b></span>
+  <div class="logo">
+    <embed class="embed" :src="urlD" v-if="url.length > 0" /><Picture v-else />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import logoUrl from "@/assets/imgs/logo/blob-logo.svg";
 
 export default defineComponent({
   name: "LogoView",
   props: {
-    width: {
-      type: Number,
-      default: 55,
-    },
-    height: {
-      type: Number,
-      default: 40,
+    url: {
+      type: String,
+      default: "",
     },
   },
   data() {
     return {
-      url: logoUrl,
+      urlD: this.url,
     };
   },
 });
@@ -31,24 +25,9 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .logo {
-  vertical-align: middle;
-  text-align: center;
-  .img {
-    display: inline-flex;
-  }
+  display: inline-flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
 }
-// h3 {
-//   margin: 40px 0 0;
-// }
-// ul {
-//   list-style-type: none;
-//   padding: 0;
-// }
-// li {
-//   display: inline-block;
-//   margin: 0 10px;
-// }
-// a {
-//   color: #42b983;
-// }
 </style>

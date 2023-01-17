@@ -11,15 +11,9 @@ import (
 
 func InitRouters(app *iris.Application) {
 
-	app.Use(midware.Cors)
+	// app.Use(midware.Cors)
+	app.UseRouter(midware.Cors)
 	// app.Use(middlewares.GetJWT().Serve)
-	// app.Handle("GET", "/hello", func(ctx iris.Context) {
-	// 	ctx.JSON(
-	// 		iris.Map{
-	// 			"msg": conf.HELLO_STR,
-	// 			"code": conf.HELLO_CODE,
-	// 		})
-	// })
 	initAuthRouters(app)
 	initIndexRouters(app)
 	initLoginRouters(app)

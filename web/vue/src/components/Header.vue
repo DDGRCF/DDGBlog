@@ -2,15 +2,29 @@
   <el-affix>
     <el-menu
       :default-active="activeIndex"
-      class="el-menu-demo"
+      class="top-menu"
       mode="horizontal"
       :ellipsis="false"
+      height="100"
+      active-text-color="black"
       @select="handleSelect"
     >
-      <el-menu-item index="0"><LogoView /></el-menu-item>
+      <el-menu-item index="0">
+        <div>
+          <el-icon :size="icon.size"><MyLogo /></el-icon>
+        </div>
+      </el-menu-item>
       <div style="flex-grow: 1" />
-      <el-menu-item index="1">登录</el-menu-item>
-      <el-menu-item index="2">关于</el-menu-item>
+      <el-menu-item index="1">
+        <div>
+          <el-icon :size="icon.size"><Avatar /></el-icon>
+        </div>
+      </el-menu-item>
+      <el-menu-item index="2">
+        <div>
+          <el-icon :size="icon.size"><About /></el-icon>
+        </div>
+      </el-menu-item>
       <el-sub-menu index="3">
         <template #title>小工具</template>
         <el-sub-menu index="3-1">
@@ -29,13 +43,17 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ElMessage } from "element-plus";
-import LogoView from "./imgs/Logo.vue";
+import MyLogo from "./imgs/MyLogo.vue";
+import Avatar from "./imgs/Avatar.vue";
+import About from "./imgs/About.vue";
 import fetch from "@/api/fetch";
 
 export default defineComponent({
   name: "WebHeader",
   components: {
-    LogoView,
+    MyLogo,
+    Avatar,
+    About,
   },
   data() {
     return {
@@ -51,6 +69,9 @@ export default defineComponent({
             },
           },
         },
+      },
+      icon: {
+        size: 28,
       },
     };
   },
@@ -101,4 +122,25 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+$menu-hover-color: #7f8fa6;
+.top-menu {
+  background-color: #ffffffbb;
+  border-radius: 0 0 5px 5px;
+}
+
+.el-menu--horizontal .el-sub-menu .el-menu-item:not(.is-disabled):hover,
+.el-menu--horizontal .el-sub-menu .el-menu-item:not(.is-disabled):focus {
+  color: #2980b9 !important;
+  animation: action 1s forwards !important;
+}
+
+@keyframes action {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+</style>

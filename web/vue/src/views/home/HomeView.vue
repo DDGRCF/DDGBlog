@@ -19,15 +19,16 @@
       :sm="colsNum.main.sm"
     ></el-col>
     <el-col class="affix-right hidden-md-and-down" :lg="4">
-      <div ref="infoCard">
-        <el-card v-if="avatarConf.isShow" :body-style="{ padding: '5px' }">
+      <div v-if="avatarConf.isShow" ref="infoCard">
+        <el-card :body-style="{ padding: '5px' }">
           <el-avatar
             class="avatar"
+            ref="infoAvatar"
             :size="avatarConf.size"
             :src="avatarConf.avatarUrl"
           />
           <div style="padding: 10px; margin-top: 10px">
-            <span>DDGRCF</span>
+            <span> {{ avatarConf.name }}</span>
             <div class="bottom">
               <!-- <time class="time">{{ currentDate }}</time> -->
               <el-button text class="button">Follow Me</el-button>
@@ -63,11 +64,10 @@
           </el-carousel-item>
         </el-carousel>
       </div>
-      <!-- <div class="home-context">
-          <button @click="printEnv">This is test</button>
-          <div v-for="item in 40" :key="item">{{ item }}</div>
-        </div> -->
-      <div class="home-context"></div>
+      <div class="home-context">
+        <el-button type="primary" @click="printEnv">This is test</el-button>
+        <div v-for="item in 20" :key="item">{{ item }}</div>
+      </div>
     </el-col>
     <el-col
       :lg="colsNum.main.lg"
@@ -80,6 +80,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import menuObj from "@/conf/menu";
+import { ElAvatar } from "element-plus";
+import { Background } from "tsparticles-engine";
 
 export default defineComponent({
   name: "HomeView",
@@ -107,6 +109,7 @@ export default defineComponent({
         avatarUrl: require("../../assets/imgs/avatar/avatar-0.jpg"),
         size: 225,
         isShow: true,
+        name: "DDGRCF",
       },
     };
   },
@@ -121,8 +124,15 @@ export default defineComponent({
       console.log(menuObj.getItemName("0-1"));
     },
     watchComponentWidth() {
-      let clientWidth = (this.$refs.infoCard as HTMLElement)?.clientWidth;
-      this.avatarConf.isShow = clientWidth > this.avatarConf.size + 10;
+      let infoCardClientWidth = (this.$refs.infoCard as HTMLElement)
+        ?.clientWidth;
+      let infoAvatarClientWidth = (this.$refs.infoAvatar as typeof ElAvatar)
+        ?.$el?.clientWidth;
+      if (infoCardClientWidth && infoAvatarClientWidth) {
+        console.log(infoAvatarClientWidth / infoCardClientWidth);
+        this.avatarConf.size = infoCardClientWidth * 0.8;
+      }
+      // this.avatarConf.isShow = clientWidth > this.avatarConf.size + 10;
     },
   },
 });
@@ -152,8 +162,10 @@ export default defineComponent({
   }
 
   & > .affix-right {
+    & > :hover {
+      box-shadow: 0 0 5px #dcdde1;
+    }
     .avatar {
-      // background-color: white;
       margin-top: 20px;
     }
   }
@@ -162,14 +174,18 @@ export default defineComponent({
   height: 100%;
   & > .home-main {
     z-index: 2;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     & > .home-context {
       margin-top: 1em;
-      height: 100%;
+      flex: auto;
       display: flex;
       flex-direction: column;
       @include custom-textarea;
     }
     & > .home-carousel {
+      @include custom-shadow;
       .el-carousel {
         .el-carousel__item {
           h3 {

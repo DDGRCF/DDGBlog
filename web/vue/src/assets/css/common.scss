@@ -20,6 +20,7 @@
   }
 }
 
+$activate-color: #000000;
 $textarea-color: #ffffff;
 $textarea-shadow: rgb(199, 193, 193);
 $textarea-padding: 1em;
@@ -27,4 +28,9 @@ $textarea-padding: 1em;
   background-color: $textarea-color;
   box-shadow: 0 0 0.5em $textarea-shadow;
   padding: $textarea-padding;
+}
+
+@mixin custom-shadow {
+  // background-color: $textarea-shadow;
+  box-shadow: 0 0 0.5em $textarea-shadow;
 }
