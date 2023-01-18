@@ -1,8 +1,8 @@
 import axios from "axios";
 import { ElLoading, ElMessage } from "element-plus";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { respType } from "Fetch";
-import { respCode } from "@/types";
+import { RespType } from "Fetch";
+import { RespCode } from "@/types";
 
 let loadingInstance = ElLoading.service();
 loadingInstance.close();
@@ -51,10 +51,10 @@ fetch.interceptors.response.use(
   function (resp: AxiosResponse) {
     loadingInstance.close();
     console.log("recv: ", resp.data);
-    const data = resp.data as respType;
-    if (data.code === respCode.failure) {
+    const data = resp.data as RespType;
+    if (data.code === RespCode.failure) {
       ElMessage({
-        message: "error: " + (resp.data as respType).msg,
+        message: "error: " + (resp.data as RespType).msg,
         type: "error",
       });
     }

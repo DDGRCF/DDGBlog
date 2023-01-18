@@ -34,7 +34,7 @@
       label-width="auto"
       :scroll-to-error="true"
     >
-      <el-form-item label="得分阈值" prop="scoreThr">
+      <el-form-item class="score-item" label="得分阈值" prop="scoreThr">
         <el-input-number
           :precision="3"
           :step="0.01"
@@ -43,7 +43,7 @@
           v-model="form.scoreThr"
         />
       </el-form-item>
-      <el-form-item label="IoU阈值" prop="iouThr">
+      <el-form-item class="iou-item" label="IoU阈值" prop="iouThr">
         <el-input-number
           :min="0"
           :max="1"
@@ -75,12 +75,11 @@ import {
   ButtonInstance,
   UploadRawFile,
 } from "element-plus";
-import { sizeLimitType, formType } from "NmsCmp";
+import { SizeLimitType, FormType } from "NmsCmp";
 import fetch from "@/api/fetch";
-// import { fetch_clear } from "@/api/fetch";
 import { UploadAjaxError } from "element-plus/es/components/upload/src/ajax";
-import { respType } from "Fetch";
-import { respCode } from "@/types";
+import { RespType } from "Fetch";
+import { RespCode } from "@/types";
 
 export default defineComponent({
   name: "ToolObbNms",
@@ -94,12 +93,12 @@ export default defineComponent({
       sizeLimit: {
         size: 100,
         unit: "MB",
-      } as sizeLimitType,
+      } as SizeLimitType,
       numLimit: 10,
       form: reactive({
         scoreThr: 0.05,
         iouThr: 0.1,
-      }) as formType,
+      }) as FormType,
       button: {
         text: "提交文件",
         type: "primary",
@@ -161,11 +160,11 @@ export default defineComponent({
         总共有${files.length + uploadFiles.length}个文件`
       );
     },
-    handleSuccess(response: respType, rawFile: UploadRawFile) {
+    handleSuccess(response: RespType, rawFile: UploadRawFile) {
       this.button.isLoading = false;
       this.button.text = "提交文件";
 
-      if (response.code === respCode.success) {
+      if (response.code === RespCode.success) {
         this.button.type = "success";
         ElMessage({
           message: "操作已经完成",
@@ -223,13 +222,12 @@ export default defineComponent({
   align-items: center;
   & :first-child {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    & :nth-child(1) {
-      margin-right: 5px;
+    $gap: 10px;
+    .score-item {
+      margin-right: $gap;
     }
-    & :nth-child(2) {
-      margin-left: 5px;
+    .iou-item {
+      margin-left: $gap;
     }
   }
 }

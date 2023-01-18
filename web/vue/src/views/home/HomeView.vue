@@ -1,11 +1,6 @@
 <template>
   <el-row class="home-affix" :gutter="colsNum.gutter">
-    <el-col
-      :lg="colsNum.left.lg - 1"
-      :md="colsNum.left.md"
-      :sm="colsNum.left.sm"
-    ></el-col>
-    <el-col class="affix-left hidden-md-and-down" :lg="1">
+    <el-col class="affix-left hidden-md-and-down" :lg="6">
       <el-card class="star-card" shadow="hover">
         <el-icon><Star /></el-icon>
         <p />
@@ -17,32 +12,16 @@
       :lg="colsNum.main.lg"
       :md="colsNum.main.md"
       :sm="colsNum.main.sm"
-    ></el-col>
-    <el-col class="affix-right hidden-md-and-down" :lg="4">
-      <div v-if="avatarConf.isShow" ref="infoCard">
-        <el-card :body-style="{ padding: '5px' }">
-          <el-avatar
-            class="avatar"
-            ref="infoAvatar"
-            :size="avatarConf.size"
-            :src="avatarConf.avatarUrl"
-          />
-          <div style="padding: 10px; margin-top: 10px">
-            <span> {{ avatarConf.name }}</span>
-            <div class="bottom">
-              <!-- <time class="time">{{ currentDate }}</time> -->
-              <el-button text class="button">Follow Me</el-button>
-            </div>
-          </div>
-        </el-card>
-      </div>
-      <p />
+    >
     </el-col>
-    <el-col
-      :lg="colsNum.right.lg - 4"
-      :md="colsNum.right.md"
-      :sm="colsNum.right.sm"
-    ></el-col>
+    <el-col class="affix-right hidden-md-and-down" :lg="6">
+      <MyCard
+        :url="avatarConf.url"
+        :name="avatarConf.name"
+        :about="avatarConf.about"
+        :items="avatarConf.items"
+      />
+    </el-col>
   </el-row>
 
   <el-row class="home" :gutter="colsNum.gutter">
@@ -66,7 +45,7 @@
       </div>
       <div class="home-context">
         <el-button type="primary" @click="printEnv">This is test</el-button>
-        <div v-for="item in 20" :key="item">{{ item }}</div>
+        <div v-for="item in 80" :key="item">{{ item }}</div>
       </div>
     </el-col>
     <el-col
@@ -81,7 +60,8 @@
 import { defineComponent } from "vue";
 import menuObj from "@/conf/menu";
 import { ElAvatar } from "element-plus";
-import { Background } from "tsparticles-engine";
+import MyCard from "@/components/imgs/cards/MyCard.vue";
+import { CardItemType } from "Common";
 
 export default defineComponent({
   name: "HomeView",
@@ -106,12 +86,31 @@ export default defineComponent({
         },
       },
       avatarConf: {
-        avatarUrl: require("../../assets/imgs/avatar/avatar-0.jpg"),
+        url: require("../../assets/imgs/avatar/avatar-0.jpg"),
+        name: "DDG RCF",
+        about: "Focus on the region of Deep Learning in the computer vision. ",
+        items: [
+          {
+            num: 80,
+            word: "forks",
+          },
+          {
+            num: 23200,
+            word: "stars",
+          },
+          {
+            num: 180000,
+            word: "followers",
+          },
+        ] as CardItemType[],
         size: 225,
         isShow: true,
-        name: "DDGRCF",
+        fit: "fill",
       },
     };
+  },
+  components: {
+    MyCard,
   },
   unmounted() {
     window.removeEventListener("resize", this.watchComponentWidth);
@@ -162,12 +161,9 @@ export default defineComponent({
   }
 
   & > .affix-right {
-    & > :hover {
-      box-shadow: 0 0 5px #dcdde1;
-    }
-    .avatar {
-      margin-top: 20px;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 .home {

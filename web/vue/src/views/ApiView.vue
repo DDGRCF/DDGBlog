@@ -48,6 +48,9 @@ export default defineComponent({
   .container {
     .header {
       flex: 0 1 0;
+      width: 100%;
+      padding: 0;
+      margin: 0;
     }
     .main {
       flex: 1 1 auto;

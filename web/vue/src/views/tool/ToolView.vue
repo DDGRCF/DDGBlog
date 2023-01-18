@@ -1,43 +1,44 @@
 <template>
-  <div>
-    <el-row :gutter="colNums.gutter" class="tool-affix">
-      <el-col
-        class="tool-left hidden-sm-and-down"
-        ref="toolLeftSide"
-        :lg="colNums.left.lg"
-        :md="colNums.left.md"
-      >
-        <div class="menu">
-          <div class="menu-title" v-if="!menuStatus.isCollapse">
-            <el-icon><Tools /></el-icon><span>&nbsp;&nbsp;</span
-            ><span>工具箱</span>
-          </div>
-          <el-menu
-            :collapse="menuStatus.isCollapse"
-            class="menu-content"
-            :default-active="activeIndex"
-            @select="handleSelect"
-          >
-            <el-sub-menu index="1">
-              <template #title
-                ><el-icon><Position /></el-icon
-                ><span>旋转框处理工具</span></template
-              >
-              <el-menu-item index="1-1">DOTA提交格式转表格</el-menu-item>
-              <el-menu-item index="1-2">非极大值抑制合并</el-menu-item>
-              <el-menu-item index="1-3">十字交叉法转换</el-menu-item>
-            </el-sub-menu>
-          </el-menu>
+  <el-row :gutter="colNums.gutter" class="tool-affix">
+    <el-col
+      class="tool-left hidden-sm-and-down"
+      ref="toolLeftSide"
+      :lg="colNums.left.lg"
+      :md="colNums.left.md"
+    >
+      <div class="menu">
+        <div class="menu-title" v-if="!menuStatus.isCollapse">
+          <el-icon><Tools /></el-icon><span>&nbsp;&nbsp;</span
+          ><span>工具箱</span>
         </div>
-      </el-col>
-      <el-col
-        class="tool-right"
-        :lg="colNums.main.lg"
-        :md="colNums.main.md"
-        :sm="colNums.main.sm"
-      ></el-col>
-    </el-row>
-  </div>
+        <el-menu
+          :collapse="menuStatus.isCollapse"
+          class="menu-content"
+          :default-active="activeIndex"
+          @select="handleSelect"
+          active-text-color="#2ecc71"
+          background-color="#2c3e50"
+          text-color="#fff"
+        >
+          <el-sub-menu index="1">
+            <template #title
+              ><el-icon><Position /></el-icon
+              ><span>旋转框处理工具</span></template
+            >
+            <el-menu-item index="1-1">DOTA提交格式转表格</el-menu-item>
+            <el-menu-item index="1-2">非极大值抑制合并</el-menu-item>
+            <el-menu-item index="1-3">十字交叉法转换</el-menu-item>
+          </el-sub-menu>
+        </el-menu>
+      </div>
+    </el-col>
+    <el-col
+      class="tool-right"
+      :lg="colNums.main.lg"
+      :md="colNums.main.md"
+      :sm="colNums.main.sm"
+    ></el-col>
+  </el-row>
   <el-row :gutter="colNums.gutter" class="tools">
     <el-col
       class="hidden-sm-and-down"
@@ -168,14 +169,16 @@ $padding-size: 5px;
         justify-content: center;
         align-items: center;
         font-weight: bold;
-        box-shadow: 0 0 0.5em $shadow-color;
-        border: black;
+        box-shadow: 0 0 1px $shadow-color;
+        border: 5px solid #2c3e50;
+        background-color: white;
+        padding: 5px;
       }
       & > .menu-content {
         @include custom-scrollbar;
         flex: auto;
-        margin-top: 5px;
-        box-shadow: 0 0 0.5em $shadow-color;
+        box-shadow: 0 0 1px $shadow-color;
+        margin-top: 1px;
       }
     }
   }

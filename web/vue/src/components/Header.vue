@@ -1,11 +1,10 @@
 <template>
-  <el-affix>
+  <el-affix class="affix">
     <el-menu
       :default-active="activeIndex"
       class="top-menu"
       mode="horizontal"
       :ellipsis="false"
-      height="100"
       active-text-color="black"
       @select="handleSelect"
     >
@@ -43,9 +42,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { ElMessage } from "element-plus";
-import MyLogo from "./imgs/MyLogo.vue";
-import Avatar from "./imgs/Avatar.vue";
-import About from "./imgs/About.vue";
+import MyLogo from "./imgs/icons/MyLogo.vue";
+import Avatar from "./imgs/icons/Avatar.vue";
+import About from "./imgs/icons/About.vue";
 import fetch from "@/api/fetch";
 
 export default defineComponent({
@@ -125,6 +124,9 @@ export default defineComponent({
 <style scoped lang="scss">
 $menu-hover-color: #7f8fa6;
 .top-menu {
+  width: 100%;
+  padding: 0;
+  margin: 0;
   background-color: #ffffffbb;
   border-radius: 0 0 5px 5px;
 }

@@ -10,9 +10,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Github from "./imgs/Github.vue";
-import QQ from "./imgs/QQ.vue";
-import Gmail from "./imgs/Gmail.vue";
+import Github from "./imgs/icons/Github.vue";
+import QQ from "./imgs/icons/QQ.vue";
+import Gmail from "./imgs/icons/Gmail.vue";
 
 export default defineComponent({
   name: "WebFooter",
