@@ -19,18 +19,20 @@
     background: #515251;
   }
 }
-
+$test-color: #130f40;
+// $main-bg-color: #ece7db;
+$main-bg-color: #f1f2f6;
 $activate-color: #000000;
 $textarea-color: #ffffff;
-$textarea-shadow: rgb(199, 193, 193);
+$textarea-shadow: rgb(190, 184, 184);
 $textarea-padding: 1em;
 @mixin custom-textarea {
   background-color: $textarea-color;
-  box-shadow: 0 0 0.5em $textarea-shadow;
+  box-shadow: 0 0 5px $textarea-shadow;
   padding: $textarea-padding;
 }
 
 @mixin custom-shadow {
   // background-color: $textarea-shadow;
-  box-shadow: 0 0 0.5em $textarea-shadow;
+  box-shadow: 0 0 5px $textarea-shadow;
 }

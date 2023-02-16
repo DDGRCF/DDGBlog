@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import ApiView from "../views/ApiView.vue";
 import AdmView from "../views/AdmView.vue";
+import LoginView from "../views/login/LoginView.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -36,6 +37,12 @@ const routes: Array<RouteRecordRaw> = [
         ],
       },
     ],
+  },
+  {
+    path: "/login/:mode",
+    name: "login",
+    component: LoginView,
+    props: true,
   },
 ];
 

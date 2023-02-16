@@ -5,23 +5,30 @@
       class="top-menu"
       mode="horizontal"
       :ellipsis="false"
-      active-text-color="black"
+      active-text-color="#3d3d3d"
+      background-color="#fdf9eb77"
+      text-color="black"
       @select="handleSelect"
     >
+      <div style="flex-grow: 1" />
       <el-menu-item index="0">
         <div>
           <el-icon :size="icon.size"><MyLogo /></el-icon>
         </div>
       </el-menu-item>
-      <div style="flex-grow: 1" />
+      <div style="flex-grow: 12; z-index: -2"></div>
       <el-menu-item index="1">
         <div>
-          <el-icon :size="icon.size"><Avatar /></el-icon>
+          <el-icon :size="icon.size">
+            <font-awesome-icon icon="fa-solid fa-circle-user" />
+          </el-icon>
         </div>
       </el-menu-item>
       <el-menu-item index="2">
         <div>
-          <el-icon :size="icon.size"><About /></el-icon>
+          <el-icon :size="icon.size">
+            <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+          </el-icon>
         </div>
       </el-menu-item>
       <el-sub-menu index="3">
@@ -35,6 +42,8 @@
         <el-menu-item index="3-2">item two</el-menu-item>
         <el-menu-item index="3-3">item three</el-menu-item>
       </el-sub-menu>
+      <div style="flex-grow: 1" />
+      <div class="cover"><DynamicText /></div>
     </el-menu>
   </el-affix>
 </template>
@@ -43,16 +52,14 @@
 import { defineComponent } from "vue";
 import { ElMessage } from "element-plus";
 import MyLogo from "./imgs/icons/MyLogo.vue";
-import Avatar from "./imgs/icons/Avatar.vue";
-import About from "./imgs/icons/About.vue";
 import fetch from "@/api/fetch";
+import DynamicText from "./common/DynamicText.vue";
 
 export default defineComponent({
   name: "WebHeader",
   components: {
     MyLogo,
-    Avatar,
-    About,
+    DynamicText,
   },
   data() {
     return {
@@ -67,10 +74,14 @@ export default defineComponent({
               submit: "/api/tool/obb/submit",
             },
           },
+          login: {
+            signIn: "/login/signin",
+            signUp: "/login/signup",
+          },
         },
       },
       icon: {
-        size: 28,
+        size: 25,
       },
     };
   },
@@ -79,6 +90,8 @@ export default defineComponent({
       if (key.startsWith("0")) {
         this.$router.push(this.menuStatus.menuUrl.home);
         this.menuStatus.activeIndex = key;
+      } else if (key.startsWith("1")) {
+        this.$router.push(this.menuStatus.menuUrl.login.signIn);
       } else if (key.startsWith("3")) {
         this.$store.commit("changeUpInd", "3");
         if (key.startsWith("3-1")) {
@@ -127,22 +140,26 @@ $menu-hover-color: #7f8fa6;
   width: 100%;
   padding: 0;
   margin: 0;
-  background-color: #ffffffbb;
-  border-radius: 0 0 5px 5px;
-}
+  background-color: #fdf9eb77;
+  position: relative;
+  z-index: 1;
 
-.el-menu--horizontal .el-sub-menu .el-menu-item:not(.is-disabled):hover,
-.el-menu--horizontal .el-sub-menu .el-menu-item:not(.is-disabled):focus {
-  color: #2980b9 !important;
-  animation: action 1s forwards !important;
-}
-
-@keyframes action {
-  from {
-    width: 0;
-  }
-  to {
+  & .cover {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: -1;
+  }
+
+  @media screen and (max-width: 1024px) {
+    & .cover {
+      display: none;
+    }
   }
 }
 </style>

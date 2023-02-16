@@ -44,8 +44,11 @@
         </el-carousel>
       </div>
       <div class="home-context">
-        <el-button type="primary" @click="printEnv">This is test</el-button>
-        <div v-for="item in 80" :key="item">{{ item }}</div>
+        <div
+          v-for="item in 80"
+          :key="item"
+          style="height: 200px; border: 1px solid black"
+        ></div>
       </div>
     </el-col>
     <el-col
@@ -58,7 +61,6 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import menuObj from "@/conf/menu";
 import { ElAvatar } from "element-plus";
 import MyCard from "@/components/imgs/cards/MyCard.vue";
 import { CardItemType } from "Common";
@@ -119,9 +121,6 @@ export default defineComponent({
     window.addEventListener("resize", this.watchComponentWidth);
   },
   methods: {
-    printEnv() {
-      console.log(menuObj.getItemName("0-1"));
-    },
     watchComponentWidth() {
       let infoCardClientWidth = (this.$refs.infoCard as HTMLElement)
         ?.clientWidth;
@@ -153,7 +152,10 @@ export default defineComponent({
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      background-color: #eeeeee;
+      background: #ffffff;
+      border: 0;
+      padding: 2px;
+      @include custom-shadow;
     }
   }
   & > .affix-main {

@@ -16,9 +16,6 @@
           class="menu-content"
           :default-active="activeIndex"
           @select="handleSelect"
-          active-text-color="#2ecc71"
-          background-color="#2c3e50"
-          text-color="#fff"
         >
           <el-sub-menu index="1">
             <template #title
@@ -165,19 +162,19 @@ $padding-size: 5px;
       flex-direction: column;
       height: 100%;
       $shadow-color: rgb(199, 193, 193);
+      --bg-color: $context-color;
       & > .menu-title {
         justify-content: center;
         align-items: center;
         font-weight: bold;
         box-shadow: 0 0 1px $shadow-color;
-        border: 5px solid #2c3e50;
-        background-color: white;
+        background-color: $textarea-color;
         padding: 5px;
       }
       & > .menu-content {
         @include custom-scrollbar;
         flex: auto;
-        box-shadow: 0 0 1px $shadow-color;
+        background-color: $textarea-color;
         margin-top: 1px;
       }
     }

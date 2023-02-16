@@ -1,10 +1,4 @@
 <template>
-  <Particles
-    id="tsparticles"
-    :particles-init="particlesInit"
-    :particles-loaded="particlesLoaded"
-    :options="particlesconf"
-  />
   <router-view />
 </template>
 
@@ -17,7 +11,7 @@ import { loadFull } from "tsparticles";
 export default {
   data() {
     return {
-      particlesconf: particles,
+      particlesconf: particles.conf,
     };
   },
   methods: {
@@ -46,6 +40,7 @@ body {
   color: #2c3e50;
   margin: 0;
   padding: 0;
+  --el-color-primary: #2c3e50;
 }
 #tsparticles {
   display: flex;

@@ -1,4 +1,10 @@
 <template>
+  <Particles
+    id="tsparticles"
+    :particles-init="particlesInit"
+    :particles-loaded="particlesLoaded"
+    :options="particlesconf"
+  />
   <div class="common-layout">
     <el-container class="container">
       <el-header class="header"><HeaderVue /></el-header>
@@ -15,17 +21,44 @@ import { defineComponent } from "vue";
 import HeaderVue from "@/components/Header.vue";
 import FooterVue from "@/components/Footer.vue";
 
+import particles from "@/conf/particles";
+import type { Engine } from "tsparticles-engine";
+import type { Container } from "tsparticles-engine";
+import { loadFull } from "tsparticles";
+
 export default defineComponent({
   name: "HomeView",
   components: {
     HeaderVue,
     FooterVue,
   },
+  data() {
+    return {
+      particlesconf: particles.conf,
+    };
+  },
+  methods: {
+    async particlesInit(engine: Engine) {
+      await loadFull(engine);
+    },
+    async particlesLoaded(container: Container) {
+      console.log("Particles container loaded", container);
+    },
+  },
 });
 </script>
 
 <style scoped lang="scss">
 @import "@/assets/css/common.scss";
+
+#tsparticles {
+  display: flex;
+  flex: auto;
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 
 .common-layout {
   display: flex;
