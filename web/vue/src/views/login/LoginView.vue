@@ -37,7 +37,9 @@
               type="password"
               :prefix-icon="icon.password"
               autocomplete="off"
-              @paste.prevent="handlePaste"
+              @paste.capture.prevent="handlePaste"
+              @copy.capture.prevent="handlePaste"
+              @cut.capture.prevent="handlePaste"
             />
           </el-form-item>
           <el-form-item class="form-item" prop="checkPassword">
@@ -47,6 +49,9 @@
               type="password"
               autocomplete="off"
               :prefix-icon="icon.password"
+              @paste.capture.prevent="handlePaste"
+              @copy.capture.prevent="handlePaste"
+              @cut.capture.prevent="handlePaste"
             />
           </el-form-item>
           <div class="button-group">
@@ -84,6 +89,9 @@
               type="password"
               :prefix-icon="icon.password"
               autocomplete="off"
+              @paste.capture.prevent="handlePaste"
+              @copy.capture.prevent="handlePaste"
+              @cut.capture.prevent="handlePaste"
             />
           </el-form-item>
           <div class="button-group">
@@ -97,6 +105,9 @@
       <div class="overlay-container">
         <div class="overlay">
           <div class="overlay-panel overlay-left">
+            <router-link to="/api/home">
+              <el-icon class="me-logo" :size="80"><MyLogo></MyLogo></el-icon>
+            </router-link>
             <h1>嗨, 我的朋友</h1>
             <p>请输入你的个人信息进行注册，然后开始本博客的体验吧！</p>
             <el-button
@@ -107,6 +118,9 @@
             >
           </div>
           <div class="overlay-panel overlay-right">
+            <router-link to="/api/home">
+              <el-icon class="me-logo" :size="80"><MyLogo></MyLogo></el-icon>
+            </router-link>
             <h1>欢迎回来，我的朋友</h1>
             <p>为了进入本博客系统，请使用你已经注册的个人信息进行登录吧！</p>
             <el-button
@@ -127,7 +141,7 @@ import { defineComponent } from "vue";
 import { User, Message, Lock } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { FormInstance } from "element-plus";
-import { reference } from "@popperjs/core";
+import MyLogo from "@/components/imgs/icons/MyLogo.vue";
 
 export default defineComponent({
   name: "LoginView",
@@ -136,6 +150,9 @@ export default defineComponent({
       type: String,
       default: "signIn",
     },
+  },
+  components: {
+    MyLogo,
   },
   mounted() {
     if (this.mode == "signin") {
@@ -270,8 +287,9 @@ export default defineComponent({
       let form = this.$refs.signUpForm as FormInstance;
       form?.resetFields(Object.keys(this.signUpInfo));
     },
-    handlePaste(event: any) {
-      console.log(event);
+    handlePaste(event: Event) {
+      console.log((event.target as HTMLElement)?.tagName); // event 是dom原生事件的
+      return false;
     },
   },
 });
@@ -468,6 +486,15 @@ export default defineComponent({
         transform: translateX(0);
         transition: transform 0.6s ease-in-out;
         .overlay-panel {
+          .me-logo {
+            margin-bottom: 40px;
+            &:active {
+              transform: scale(0.95);
+            }
+            cursor: pointer;
+            // box-shadow: -5px 0 2px 2px rgba(0, 0, 0, 0.25);
+            border-radius: 50%;
+          }
           box-sizing: border-box;
           position: absolute;
           display: flex;
